@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class AsteroidsGame extends PApplet {
+
 SpaceShip reaper = new SpaceShip();
 Star[] fire = new Star[100];
 public void setup() 
@@ -70,13 +86,14 @@ class SpaceShip extends Floater
     if (keyPressed) {
       if(keyCode == RIGHT){reaper.rotate(5);}
       if(keyCode == LEFT){reaper.rotate(-5);}
-      if(keyCode == UP){reaper.accelerate(0.07);}
-      if(keyCode == DOWN){reaper.accelerate(-0.07);}
+      if(keyCode == UP){reaper.accelerate(0.07f);}
+      if(keyCode == DOWN){reaper.accelerate(-0.07f);}
       if(key == 'a'){
+        //reaper.accelerate(0);
         reaper.setDirectionX(0);
         reaper.setDirectionY(0);
-        reaper.setCenterX((int)(Math.random()*480)+10);
-        reaper.setCenterY((int)(Math.random()*480)+10);
+        reaper.setCenterX((int)(Math.random()*498)+1);
+        reaper.setCenterY((int)(Math.random()*498)+1);
         reaper.setPointDirection((int)(Math.random()*180));
       }
     }
@@ -160,3 +177,12 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   }  
 } 
 
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "AsteroidsGame" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}
