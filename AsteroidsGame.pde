@@ -13,9 +13,9 @@ public void draw()
   for(int i = 0; i < fire.length; i++){
     fire[i].shine();
   }
-  reaper.keyPressed();
   reaper.show();
   reaper.move();
+  reaper.keyPressed();
 }
 class Star
 {
@@ -49,8 +49,8 @@ class SpaceShip extends Floater
       xCorners[5] = -5;
       yCorners[5] = 4;
     myColor = color(0, 255, 0);
-    myCenterX = 250;
-    myCenterY = 250;
+    myCenterX = (500/2);
+    myCenterY = (500/2);
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;
@@ -72,12 +72,12 @@ class SpaceShip extends Floater
       if(keyCode == LEFT){reaper.rotate(-5);}
       if(keyCode == UP){reaper.accelerate(0.07);}
       if(keyCode == DOWN){reaper.accelerate(-0.07);}
-      if(key == 'a'){
+      if(key == '0'){
         reaper.setDirectionX(0);
         reaper.setDirectionY(0);
-        reaper.setCenterX((int)(Math.random()*480)+10);
-        reaper.setCenterY((int)(Math.random()*480)+10);
-        reaper.setPointDirection((int)(Math.random()*180));
+        reaper.setCenterX((int)(Math.random()*(500-20))+10);
+        reaper.setCenterY((int)(Math.random()*(500-20))+10);
+        reaper.setPointDirection((int)(Math.random()*360));
       }
     }
   }
@@ -159,4 +159,3 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     endShape(CLOSE);  
   }  
 } 
-
