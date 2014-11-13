@@ -7,6 +7,21 @@ public void setup()
     fire[i] = new Star();
   }
 }
+public void keyPressed() {
+  if (keyPressed) {
+    if(keyCode == RIGHT){reaper.rotate(10);}
+    if(keyCode == LEFT){reaper.rotate(-10);}
+    if(keyCode == UP){reaper.accelerate(0.12);}
+    if(keyCode == DOWN){reaper.accelerate(-0.12);}
+    if(key == ' '){
+      reaper.setDirectionX(0);
+      reaper.setDirectionY(0);
+      reaper.setCenterX((int)(Math.random()*(500-20))+10);
+      reaper.setCenterY((int)(Math.random()*(500-20))+10);
+      reaper.setPointDirection((int)(Math.random()*360));
+    }
+  }
+}
 public void draw() 
 {
   background(0);
@@ -15,7 +30,6 @@ public void draw()
   }
   reaper.show();
   reaper.move();
-  reaper.keyPressed();
 }
 class Star
 {
@@ -36,18 +50,18 @@ class SpaceShip extends Floater
     corners = 6;
     xCorners = new int [corners];
     yCorners = new int [corners];
-      xCorners[0] = -5;
-      yCorners[0] = 7;
-      xCorners[1] = 18;
-      yCorners[1] = 0;
-      xCorners[2] = -5;
-      yCorners[2] = -7;
-      xCorners[3] = -5;
-      yCorners[3] = -4;
-      xCorners[4] = 12;
-      yCorners[4] = 0;
-      xCorners[5] = -5;
-      yCorners[5] = 4;
+      xCorners[0] = 16;
+      yCorners[0] = 0;
+      xCorners[1] = -6;
+      yCorners[1] = 6;
+      xCorners[2] = -6;
+      yCorners[2] = 3;
+      xCorners[3] = 8;
+      yCorners[3] = 0;
+      xCorners[4] = -6;
+      yCorners[4] = -3;
+      xCorners[5] = -6;
+      yCorners[5] = -6;
     myColor = color(0, 255, 0);
     myCenterX = (500/2);
     myCenterY = (500/2);
@@ -65,23 +79,38 @@ class SpaceShip extends Floater
   public double getDirectionY() {return myDirectionY;}
   public void setPointDirection(int degrees) {myPointDirection = degrees;}
   public double getPointDirection() {return myPointDirection;}
-
-  public void keyPressed() {
-    if (keyPressed) {
-      if(keyCode == RIGHT){reaper.rotate(5);}
-      if(keyCode == LEFT){reaper.rotate(-5);}
-      if(keyCode == UP){reaper.accelerate(0.07);}
-      if(keyCode == DOWN){reaper.accelerate(-0.07);}
-      if(key == '0'){
-        reaper.setDirectionX(0);
-        reaper.setDirectionY(0);
-        reaper.setCenterX((int)(Math.random()*(500-20))+10);
-        reaper.setCenterY((int)(Math.random()*(500-20))+10);
-        reaper.setPointDirection((int)(Math.random()*360));
-      }
-    }
-  }
 }
+
+/*class Asteroid extends Floater
+{
+  private int astSpin;
+  Asteroid()
+  {
+    corners = 4;
+    xCorners = new int [corners];
+    yCorners = new int [corners];
+      xCorners[0] = 20;
+      yCorners[0] = 0;
+      xCorners[1] = 0;
+      yCorners[1] = 20;
+      xCorners[2] = -20;
+      yCorners[2] = 0;
+      xCorners[3] = 0;
+      yCorners[3] = -20;
+    myColor = color(255);
+  }
+  public void setCenterX(int x) {myCenterX = x;}
+  public int getCenterX() {return (int)myCenterX;}
+  public void setCenterY(int y) {myCenterY = y;}
+  public int getCenterY() {return (int)myCenterY;}
+  public void setDirectionX(double x) {myDirectionX = x;}
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY = y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+  public double getPointDirection() {return myPointDirection;}
+}
+*/
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
