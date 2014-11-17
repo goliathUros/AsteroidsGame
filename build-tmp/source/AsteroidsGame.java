@@ -16,13 +16,18 @@ public class AsteroidsGame extends PApplet {
 
 SpaceShip reaper = new SpaceShip();
 Star[] fire = new Star[100];
-public void setup() 
-{
+Asteroid[] boo = new Asteroid[5];
+
+public void setup() {
   size(500,500);
   for(int i = 0; i < fire.length; i++){
     fire[i] = new Star();
   }
+  for(int i = 0; i < boo.length; i++){
+    boo[i] = new Asteroid();
+  }
 }
+
 public void keyPressed() {
   if (keyPressed) {
     if(keyCode == RIGHT){reaper.rotate(10);}
@@ -38,17 +43,21 @@ public void keyPressed() {
     }
   }
 }
-public void draw() 
-{
+
+public void draw() {
   background(0);
   for(int i = 0; i < fire.length; i++){
     fire[i].shine();
   }
   reaper.show();
   reaper.move();
+  for(int i = 0; i < boo.length; i++){
+    boo[i].show();
+    boo[i].move();
+  }
 }
-class Star
-{
+
+class Star {
   private int xPos, yPos;
   public Star() {
     xPos = (int)(Math.random()*500);
@@ -60,8 +69,8 @@ class Star
     ellipse(xPos, yPos, 2, 2);
   }
 }
-class SpaceShip extends Floater  
-{ 
+
+class SpaceShip extends Floater  { 
   public SpaceShip() {
     corners = 6;
     xCorners = new int [corners];
@@ -97,23 +106,36 @@ class SpaceShip extends Floater
   public double getPointDirection() {return myPointDirection;}
 }
 
-/*class Asteroid extends Floater
-{
+class Asteroid extends Floater {
   private int astSpin;
   Asteroid()
   {
-    corners = 4;
+    corners = 8;
     xCorners = new int [corners];
     yCorners = new int [corners];
       xCorners[0] = 20;
       yCorners[0] = 0;
-      xCorners[1] = 0;
-      yCorners[1] = 20;
-      xCorners[2] = -20;
-      yCorners[2] = 0;
-      xCorners[3] = 0;
-      yCorners[3] = -20;
+      xCorners[1] = 5;
+      yCorners[1] = 5;
+      xCorners[2] = 0;
+      yCorners[2] = 20;
+      xCorners[3] = -5;
+      yCorners[3] = 5;
+      xCorners[4] = -20;
+      yCorners[4] = 0;
+      xCorners[5] = -5;
+      yCorners[5] = -5;
+      xCorners[6] = 0;
+      yCorners[6] = -20;
+      xCorners[7] = 5;
+      yCorners[7] = -5;
     myColor = color(255);
+    myCenterX = ((int)(Math.random()*500));
+    myCenterY = ((int)(Math.random()*500));
+    myDirectionX = 2;
+    myDirectionY = 2;
+    myPointDirection = 0;
+    astSpin = ((int)(Math.random()*8)-4);
   }
   public void setCenterX(int x) {myCenterX = x;}
   public int getCenterX() {return (int)myCenterX;}
@@ -125,11 +147,26 @@ class SpaceShip extends Floater
   public double getDirectionY() {return myDirectionY;}
   public void setPointDirection(int degrees) {myPointDirection = degrees;}
   public double getPointDirection() {return myPointDirection;}
-}
-*/
 
-abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
-{   
+  public void move() 
+  {
+    accelerate((int)((Math.random()*5)+1));
+    myCenterX += 1;
+    myCenterY += 1;
+    myPointDirection += astSpin;
+
+    if(myCenterX > width + 20) {
+      myCenterX = -20;
+      myCenterX -= -1; 
+    }    
+    else if (myCenterX < -20) {myCenterX = width + 20;}    
+    if(myCenterY > height + 20) {myCenterY = -20;}   
+    else if (myCenterY < -20) {myCenterY = height + 20;} 
+  }
+}
+
+
+abstract class Floater { //Do NOT modify the Floater class! Make changes in the SpaceShip class   
   protected int corners;  //the number of corners, a triangular floater has 3   
   protected int[] xCorners;   
   protected int[] yCorners;   
@@ -188,7 +225,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   }   
   public void show ()  //Draws the floater at the current position  
   {             
-    fill(100);   
+    noFill();   
     stroke(myColor);    
     //convert degrees to radians for sin and cos         
     double dRadians = myPointDirection*(Math.PI/180);                 
@@ -203,7 +240,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     }   
     endShape(CLOSE);  
   }  
-} 
+}
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "AsteroidsGame" };
     if (passedArgs != null) {
