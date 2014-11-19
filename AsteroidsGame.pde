@@ -57,20 +57,10 @@ class Star {
 class SpaceShip extends Floater  { 
   public SpaceShip() {
     corners = 6;
-    xCorners = new int [corners];
-    yCorners = new int [corners];
-      xCorners[0] = 16;
-      yCorners[0] = 0;
-      xCorners[1] = -6;
-      yCorners[1] = 6;
-      xCorners[2] = -6;
-      yCorners[2] = 3;
-      xCorners[3] = 8;
-      yCorners[3] = 0;
-      xCorners[4] = -6;
-      yCorners[4] = -3;
-      xCorners[5] = -6;
-      yCorners[5] = -6;
+    int[] shipX = {16, -6, -6, 8, -6, -6};
+    int[] shipY = {0, 6, 3, 0, -3, -6};
+    xCorners = shipX;
+    yCorners = shipY;
     myColor = color(0, 255, 0);
     myCenterX = (500/2);
     myCenterY = (500/2);
@@ -95,30 +85,16 @@ class Asteroid extends Floater {
   Asteroid()
   {
     corners = 8;
-    xCorners = new int [corners];
-    yCorners = new int [corners];
-      xCorners[0] = 20;
-      yCorners[0] = 0;
-      xCorners[1] = 5;
-      yCorners[1] = 5;
-      xCorners[2] = 0;
-      yCorners[2] = 20;
-      xCorners[3] = -5;
-      yCorners[3] = 5;
-      xCorners[4] = -20;
-      yCorners[4] = 0;
-      xCorners[5] = -5;
-      yCorners[5] = -5;
-      xCorners[6] = 0;
-      yCorners[6] = -20;
-      xCorners[7] = 5;
-      yCorners[7] = -5;
+    int[] astX = {20, 5, 0, -5, -20, -5, 0, 5};
+    int[] astY = {0, 5, 20, 5, 0, -5, -20, -5};
+    xCorners = astX;
+    yCorners = astY;
     myColor = color(255);
     myCenterX = ((int)(Math.random()*500));
     myCenterY = ((int)(Math.random()*500));
-    myDirectionX = 2;
-    myDirectionY = 2;
-    myPointDirection = 0;
+    myDirectionX = ((int)(Math.random()*5)-2);
+    myDirectionY = ((int)(Math.random()*5)-2);
+    myPointDirection = ((int)(Math.random()*5)-2);
     astSpin = ((int)(Math.random()*8)-4);
   }
   public void setCenterX(int x) {myCenterX = x;}
@@ -134,15 +110,8 @@ class Asteroid extends Floater {
 
   public void move() 
   {
-    accelerate((int)((Math.random()*5)+1));
-    myCenterX += 1;
-    myCenterY += 1;
-    myPointDirection += astSpin;
-
-    if(myCenterX > width + 20) {myCenterX = -20;}    
-    else if (myCenterX < -20) {myCenterX = width + 20;}    
-    if(myCenterY > height + 20) {myCenterY = -20;}   
-    else if (myCenterY < -20) {myCenterY = height + 20;} 
+    rotate(astSpin);
+    super.move();
   }
 }
 
