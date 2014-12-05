@@ -1,9 +1,12 @@
-SpaceShip reaper = new SpaceShip();
+SpaceShip ship = new SpaceShip();
 Star[] fire = new Star[150];
 ArrayList <Asteroid> meteor = new ArrayList <Asteroid>();
 //Asteroid[] boo = new Asteroid[6];
+ArrayList <Bullet> shoot = new ArrayList <Bullet>();
+//Bullet shoot = new Bullet(ship);
 
-public void setup() {
+public void setup()
+{
   size(700,700);
 
   for(int i = 0; i < fire.length; i++){
@@ -13,53 +16,88 @@ public void setup() {
   for(int i = 0; i <= 6; i++) {
     meteor.add(i, new Asteroid());
   }
+
   /*for(int i = 0; i < boo.length; i++){
     boo[i] = new Asteroid();
   }*/
 }
 
-public void keyPressed() {
-  if (keyPressed) {
-    if(keyCode == RIGHT){reaper.rotate(15);}
-    if(keyCode == LEFT){reaper.rotate(-15);}
-    if(keyCode == UP){reaper.accelerate(0.12);}
-    if(keyCode == DOWN){reaper.accelerate(-0.12);}
-    if(key == ' '){
-      reaper.setDirectionX(0);
-      reaper.setDirectionY(0);
-      reaper.setCenterX((int)(Math.random()*(700-20))+10);
-      reaper.setCenterY((int)(Math.random()*(700-20))+10);
-      reaper.setPointDirection((int)(Math.random()*360));
-    }
-  }
-}
-
-public void draw() {
+public void draw()
+{
   background(0);
   for(int i = 0; i < fire.length; i++){
     fire[i].shine();
   }
-  reaper.show();
-  reaper.move();
+  ship.show();
+  ship.move();
 
   for(int i = 0; i < meteor.size(); i++){
     meteor.get(i).show();
     meteor.get(i).move();
+
+    for(int j = 0; j < shoot.size(); j++){
+      if (dist(shoot.get(j).getCenterX(), shoot.get(j).getCenterY(), meteor.get(i).getCenterX(), meteor.get(i).getCenterY()) < meteor.get(i).getAstSize()){
+        meteor.remove(i);
+        meteor.add(new Asteroid());
+        shoot.remove(j);
+      }
+    }
+
+    // if (dist(ship.getCenterX(), ship.getCenterY(), (meteor.get(i)).getCenterX(), (meteor.get(i)).getCenterY()) < meteor.get(i).getAstSize()) {
+    //   meteor.remove(i);
+    //   meteor.add(new Asteroid());
+    // }
+  }
+
+  for(int i = 1; i < meteor.size(); i++){
+    if (meteor.get(i).getCenterX() == meteor.get(i-1).getCenterX() || meteor.get(i).getCenterY() == meteor.get(i-1).getCenterY()) {
+      /*meteor.remove(i);
+      meteor.remove(i-1);
+      meteor.add(0, new Asteroid());
+      meteor.add(1, new Asteroid());
+      */
+      meteor.get(i).setDirectionX(-(meteor.get(i).getDirectionX()));
+      meteor.get(i).setDirectionY(-(meteor.get(i).getDirectionY()));
+      meteor.get(i-1).setDirectionX(-(meteor.get(i-1).getDirectionX()));
+      meteor.get(i-1).setDirectionY(-(meteor.get(i-1).getDirectionY()));
+    }
   }
 
   /*for(int i = 0; i < boo.length; i++){
     boo[i].show();
     boo[i].move();
   }*/
-  for(int i = 0; i < meteor.size(); i++) {
-    if (dist(reaper.getCenterX(), reaper.getCenterY(), (meteor.get(i)).getCenterX(), (meteor.get(i)).getCenterY()) < meteor.get(i).getAstSize()) {
-      meteor.remove(i);
-      meteor.add(new Asteroid());
+
+  for(int i = 0; i < shoot.size(); i++) {
+    shoot.get(i).show();  
+    shoot.get(i).move();
+  }
+}
+
+
+public void keyPressed()
+{
+  if (keyPressed) {
+    if(keyCode == RIGHT){ship.rotate(15);}
+    if(keyCode == LEFT){ship.rotate(-15);}
+    if(keyCode == UP){ship.accelerate(0.12);}
+    if(keyCode == DOWN){ship.accelerate(-0.12);}
+    if(key == 'a')
+    {
+      ship.setDirectionX(0);
+      ship.setDirectionY(0);
+      ship.setCenterX((int)(Math.random()*(700-20))+10);
+      ship.setCenterY((int)(Math.random()*(700-20))+10);
+      ship.setPointDirection((int)(Math.random()*360));
+    }
+    if(key == 's') {
+      shoot.add(new Bullet(ship));
     }
   }
 }
 
-class Star {
+class Star
+{
   private int xPos, yPos;
   public Star() {
     xPos = (int)(Math.random()*700);
@@ -72,7 +110,8 @@ class Star {
   }
 }
 
-class SpaceShip extends Floater  { 
+class SpaceShip extends Floater
+{ 
   public SpaceShip() {
     corners = 6;
     int[] shipX = {16, -6, -6, 8, -6, -6};
@@ -98,7 +137,8 @@ class SpaceShip extends Floater  {
   public double getPointDirection() {return myPointDirection;}
 }
 
-class Asteroid extends Floater {
+class Asteroid extends Floater
+{
   private int astSpin;
   private int astSize;
   Asteroid()
@@ -127,6 +167,7 @@ class Asteroid extends Floater {
   public double getDirectionY() {return myDirectionY;}
   public void setPointDirection(int degrees) {myPointDirection = degrees;}
   public double getPointDirection() {return myPointDirection;}
+
   public double getAstSize() {return astSize;}
 
   public void move() 
@@ -136,6 +177,43 @@ class Asteroid extends Floater {
   }
 }
 
+class Bullet extends Floater
+{
+  public Bullet(SpaceShip ship) {
+    myCenterX = ship.getCenterX();
+    myCenterY = ship.getCenterY();
+    myPointDirection = ship.getPointDirection();
+    myColor =color(0, 255, 0);
+
+    double dRadians = myPointDirection*(Math.PI/180);
+    myDirectionX = 5 * Math.cos(dRadians) + ship.getDirectionX();
+    myDirectionY = 5 * Math.sin(dRadians) + ship.getDirectionY();
+  }
+
+  public void setCenterX(int x) {myCenterX = x;}
+  public int getCenterX() {return (int)myCenterX;}
+  public void setCenterY(int y) {myCenterY = y;}
+  public int getCenterY() {return (int)myCenterY;}
+  public void setDirectionX(double x) {myDirectionX = x;}
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY = y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+  public double getPointDirection() {return myPointDirection;}
+
+  public void show()
+  {
+    stroke(myColor);
+    fill(myColor);
+    ellipse((float)myCenterX, (float)myCenterY, 5, 5);
+  }
+
+  public void move()
+  {
+    myCenterX += myDirectionX;
+    myCenterY += myDirectionY;
+  }
+}
 
 abstract class Floater { //Do NOT modify the Floater class! Make changes in the SpaceShip class   
   protected int corners;  //the number of corners, a triangular floater has 3   
