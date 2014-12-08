@@ -21,9 +21,12 @@ ArrayList <Asteroid> meteor = new ArrayList <Asteroid>();
 ArrayList <Bullet> shoot = new ArrayList <Bullet>();
 //Bullet shoot = new Bullet(ship);
 
+boolean[] keyz = new boolean[6];
+
 public void setup()
 {
   size(700,700);
+  smooth();
 
   for(int i = 0; i < fire.length; i++){
     fire[i] = new Star();
@@ -66,51 +69,72 @@ public void draw()
   }
 
   for(int i = 1; i < meteor.size(); i++){
-    if (meteor.get(i).getCenterX() == meteor.get(i-1).getCenterX() || meteor.get(i).getCenterY() == meteor.get(i-1).getCenterY()) {
-      /*meteor.remove(i);
-      meteor.remove(i-1);
-      meteor.add(0, new Asteroid());
-      meteor.add(1, new Asteroid());
-      */
+    if (meteor.get(i).getCenterX() < meteor.get(i-1).getCenterX() || meteor.get(i).getCenterY() < meteor.get(i-1).getCenterY()) {
+      // meteor.remove(i);
+      // meteor.remove(i-1);
+      // meteor.add(0, new Asteroid());
+      // meteor.add(1, new Asteroid());
       meteor.get(i).setDirectionX(-(meteor.get(i).getDirectionX()));
       meteor.get(i).setDirectionY(-(meteor.get(i).getDirectionY()));
       meteor.get(i-1).setDirectionX(-(meteor.get(i-1).getDirectionX()));
       meteor.get(i-1).setDirectionY(-(meteor.get(i-1).getDirectionY()));
     }
+
+    if (dist(ship.getCenterX(), ship.getCenterY(), meteor.get(i).getCenterX(), meteor.get(i).getCenterY()) < meteor.get(i).getAstSize()) {
+      ship.setDirectionX(0);
+      ship.setDirectionY(0);
+      meteor.get(i).setDirectionX(0);
+      meteor.get(i).setDirectionY(0);
+      textAlign(CENTER);
+      textSize(50);
+      stroke(255);
+      text("GAME OVER \n Press button to continue", width/2, height/2);
+    }
   }
 
-  /*for(int i = 0; i < boo.length; i++){
-    boo[i].show();
-    boo[i].move();
-  }*/
+  // for(int i = 0; i < boo.length; i++){
+  //   boo[i].show();
+  //   boo[i].move();
+  // }
 
   for(int i = 0; i < shoot.size(); i++) {
     shoot.get(i).show();  
     shoot.get(i).move();
   }
-}
 
-
-public void keyPressed()
-{
-  if (keyPressed) {
-    if(keyCode == RIGHT){ship.rotate(15);}
-    if(keyCode == LEFT){ship.rotate(-15);}
-    if(keyCode == UP){ship.accelerate(0.12f);}
-    if(keyCode == DOWN){ship.accelerate(-0.12f);}
-    if(key == 'a')
-    {
+  if(keyz[0]) {ship.rotate(4);}
+  if(keyz[1]) {ship.rotate(-4);}
+  if(keyz[2]) {ship.accelerate(0.12f);}
+  if(keyz[3]) {ship.accelerate(-0.12f);} 
+  if(keyz[4]) {
       ship.setDirectionX(0);
       ship.setDirectionY(0);
       ship.setCenterX((int)(Math.random()*(700-20))+10);
       ship.setCenterY((int)(Math.random()*(700-20))+10);
       ship.setPointDirection((int)(Math.random()*360));
-    }
-    if(key == 's') {
-      shoot.add(new Bullet(ship));
-    }
   }
+  if(keyz[5]) {shoot.add(new Bullet(ship));}
 }
+
+public void keyPressed() {
+  if (keyCode == RIGHT)  keyz[0] = true;
+  if (keyCode == LEFT)  keyz[1] = true;
+  if (keyCode == UP)  keyz[2] = true;
+  if (keyCode == DOWN)  keyz[3] = true;
+  if (key == 'a')  keyz[4] = true;
+  if (key == 's')  keyz[5] = true;
+}
+ 
+public void keyReleased() {
+  if (keyCode == RIGHT)  keyz[0] = false;
+  if (keyCode == LEFT)  keyz[1] = false;
+  if (keyCode == UP)  keyz[2] = false;
+  if (keyCode == DOWN)  keyz[3] = false;
+  if (key == 'a')  keyz[4] = false;
+  if (key == 's')  keyz[5] = false;
+}
+
+
 
 class Star
 {
