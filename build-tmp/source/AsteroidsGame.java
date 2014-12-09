@@ -21,7 +21,7 @@ ArrayList <Asteroid> meteor = new ArrayList <Asteroid>();
 ArrayList <Bullet> shoot = new ArrayList <Bullet>();
 //Bullet shoot = new Bullet(ship);
 
-boolean[] keyz = new boolean[6];
+boolean[] keyz = new boolean[5];
 
 public void setup()
 {
@@ -106,14 +106,7 @@ public void draw()
   if(keyz[1]) {ship.rotate(-4);}
   if(keyz[2]) {ship.accelerate(0.12f);}
   if(keyz[3]) {ship.accelerate(-0.12f);} 
-  if(keyz[4]) {
-      ship.setDirectionX(0);
-      ship.setDirectionY(0);
-      ship.setCenterX((int)(Math.random()*(700-20))+10);
-      ship.setCenterY((int)(Math.random()*(700-20))+10);
-      ship.setPointDirection((int)(Math.random()*360));
-  }
-  if(keyz[5]) {shoot.add(new Bullet(ship));}
+  if(keyz[4]) {shoot.add(new Bullet(ship));}
 }
 
 public void keyPressed() {
@@ -121,8 +114,14 @@ public void keyPressed() {
   if (keyCode == LEFT)  keyz[1] = true;
   if (keyCode == UP)  keyz[2] = true;
   if (keyCode == DOWN)  keyz[3] = true;
-  if (key == 'a')  keyz[4] = true;
-  if (key == 's')  keyz[5] = true;
+  if (key == 'a')  {
+      ship.setDirectionX(0);
+      ship.setDirectionY(0);
+      ship.setCenterX((int)(Math.random()*(700-20))+10);
+      ship.setCenterY((int)(Math.random()*(700-20))+10);
+      ship.setPointDirection((int)(Math.random()*360));
+  }
+  if (key == 's')  keyz[4] = true;
 }
  
 public void keyReleased() {
@@ -130,8 +129,7 @@ public void keyReleased() {
   if (keyCode == LEFT)  keyz[1] = false;
   if (keyCode == UP)  keyz[2] = false;
   if (keyCode == DOWN)  keyz[3] = false;
-  if (key == 'a')  keyz[4] = false;
-  if (key == 's')  keyz[5] = false;
+  if (key == 's')  keyz[4] = false;
 }
 
 
