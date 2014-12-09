@@ -40,8 +40,9 @@ public void draw()
 
     for(int j = 0; j < shoot.size(); j++){
       if (dist(shoot.get(j).getCenterX(), shoot.get(j).getCenterY(), meteor.get(i).getCenterX(), meteor.get(i).getCenterY()) < meteor.get(i).getAstSize()){
-        meteor.remove(i);
-        meteor.add(new Asteroid());
+        // meteor.remove(i);
+        // meteor.add(new Asteroid());
+        meteor.set(i, new Asteroid());
         shoot.remove(j);
       }
     }
@@ -84,6 +85,10 @@ public void draw()
   for(int i = 0; i < shoot.size(); i++) {
     shoot.get(i).show();  
     shoot.get(i).move();
+
+    if (shoot.get(i).getCenterX() < 0 || shoot.get(i).getCenterY() < 0 || shoot.get(i).getCenterX() > width || shoot.get(i).getCenterY() > height) {
+      shoot.remove(i);
+    }
   }
 
   if(keyz[0]) {ship.rotate(4);}

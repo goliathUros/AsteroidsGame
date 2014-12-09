@@ -56,8 +56,9 @@ public void draw()
 
     for(int j = 0; j < shoot.size(); j++){
       if (dist(shoot.get(j).getCenterX(), shoot.get(j).getCenterY(), meteor.get(i).getCenterX(), meteor.get(i).getCenterY()) < meteor.get(i).getAstSize()){
-        meteor.remove(i);
-        meteor.add(new Asteroid());
+        // meteor.remove(i);
+        // meteor.add(new Asteroid());
+        meteor.set(i, new Asteroid());
         shoot.remove(j);
       }
     }
@@ -100,6 +101,10 @@ public void draw()
   for(int i = 0; i < shoot.size(); i++) {
     shoot.get(i).show();  
     shoot.get(i).move();
+
+    if (shoot.get(i).getCenterX() < 0 || shoot.get(i).getCenterY() < 0 || shoot.get(i).getCenterX() > width || shoot.get(i).getCenterY() > height) {
+      shoot.remove(i);
+    }
   }
 
   if(keyz[0]) {ship.rotate(4);}
@@ -110,10 +115,10 @@ public void draw()
 }
 
 public void keyPressed() {
-  if (keyCode == RIGHT)  keyz[0] = true;
-  if (keyCode == LEFT)  keyz[1] = true;
-  if (keyCode == UP)  keyz[2] = true;
-  if (keyCode == DOWN)  keyz[3] = true;
+  if (keyCode == RIGHT) {keyz[0] = true;}
+  if (keyCode == LEFT) {keyz[1] = true;}
+  if (keyCode == UP) {keyz[2] = true;}
+  if (keyCode == DOWN) {keyz[3] = true;}
   if (key == 'a')  {
       ship.setDirectionX(0);
       ship.setDirectionY(0);
@@ -121,15 +126,15 @@ public void keyPressed() {
       ship.setCenterY((int)(Math.random()*(700-20))+10);
       ship.setPointDirection((int)(Math.random()*360));
   }
-  if (key == 's')  keyz[4] = true;
+  if (key == 's') {keyz[4] = true;}
 }
  
 public void keyReleased() {
-  if (keyCode == RIGHT)  keyz[0] = false;
-  if (keyCode == LEFT)  keyz[1] = false;
-  if (keyCode == UP)  keyz[2] = false;
-  if (keyCode == DOWN)  keyz[3] = false;
-  if (key == 's')  keyz[4] = false;
+  if (keyCode == RIGHT) {keyz[0] = false;}
+  if (keyCode == LEFT) {keyz[1] = false;}
+  if (keyCode == UP) {keyz[2] = false;}
+  if (keyCode == DOWN) {keyz[3] = false;}
+  if (key == 's') {keyz[4] = false;}
 }
 
 
